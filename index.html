@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="i-Fa Design">
+  <title>i-Fa Design | Calculator</title>
+  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiaS1GYSBEZXNpZ24gQ2FsY3VsYXRvciIsInNob3J0X25hbWUiOiJpLUZhIENhbGMiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwZjE3MmEiLCJ0aGVtZV9jb2xvciI6IiMzYjgyZjYiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyUyMHhtbG5zJTNEJTIyaHR0cCUzQSUyRiUyRnd3dy53My5vcmclMkYyMDAwJTJGc3ZnJTIyJTIwdmlld0JveCUzRCUyMjAlMjAwJTIwMTAwJTIwMTAwJTIyJTNFJTNDcmVjdCUyMGZpbGwlM0QlMjIlMjMzYjgyZjYlMjIlMjB3aWR0aCUzRCUyMjEwMCUyMiUyMGhlaWdodCUzRCUyMjEwMCUyMiUyMHJ4JTNEJTIyMjAlMjIlMkYlM0UlM0N0ZXh0JTIweCUzRCUyMjUwJTIyJTIweSUzRCUyMjcwJTIyJTIwZm9udC1zaXplJTNEJTIyNjAlMjIlMjB0ZXh0LWFuY2hvciUzRCUyMm1pZGRsZSUyMiUyMGZpbGwlM0QlMjJ3aGl0ZSUyMiUyMGZvbnQtZmFtaWx5JTNEJTIyQXJpYWwlMjIlM0VpRiUzQyUyRnRleHQlM0UlM0MlMkZzdmclM0UiLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #e2e8f0;
+      --border: #334155;
+    }
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --border: #cbd5e1;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--text);
+      transition: all 0.3s;
+    }
+ .container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+ .header {
+      background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
+      padding: 20px;
+      position: relative;
+    }
+ .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+ .logo-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+ .logo-img {
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+      background: white;
+      object-fit: cover;
+      display: none;
+    }
+ .header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+    }
+ .controls {
+      display: flex;
+      gap: 8px;
+    }
+ .icon-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+ .theme-colors {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+ .color-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid white;
+    }
+ .form-body { padding: 25px; }
+ .input-group { margin-bottom: 16px; }
+ .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+ .input-group input {
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: 'Poppins', sans-serif;
+    }
+ .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      background: var(--bg);
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+ .toggle {
+      width: 44px;
+      height: 24px;
+      background: var(--border);
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+    }
+ .toggle.active { background: var(--primary); }
+ .toggle-dot {
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: 0.3s;
+    }
+ .toggle.active.toggle-dot { left: 23px; }
+ .btn-row { display: flex; gap: 10px; margin-top: 20px; }
+ .btn {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+ .btn-calc { background: var(--primary); color: white; }
+ .btn-reset { background: var(--border); color: var(--text); }
+ .btn-pdf {
+      width: 100%;
+      margin-top: 10px;
+      background: #22c55e;
+      color: white;
+    }
+ .result-box {
+      margin-top: 25px;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 20px;
+      display: none;
+    }
+ .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 9px 0;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+ .result-row:last-child { border-bottom: none; }
+ .grand-total { font-size: 18px; font-weight: 700; color: #22c55e; margin-top: 10px; }
+ .history {
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--bg);
+      border-radius: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+ .history h4 { font-size: 13px; margin-bottom: 10px; opacity: 0.7; }
+ .history-item {
+      font-size: 12px;
+      padding: 8px;
+      background: var(--card);
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="container">
+    <div class="header">
+      <div class="top-bar">
+        <div class="logo-box">
+          <img id="logoPreview" class="logo-img">
+          <h1>i-Fa Design</h1>
+        </div>
+        <div class="controls">
+          <button class="icon-btn" onclick="toggleTheme()">🌓</button>
+          <button class="icon-btn" onclick="document.getElementById('logoInput').click()">🖼️</button>
+        </div>
+      <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="loadLogo(event)">
+      <div class="theme-colors">
+        <div class="color-dot" style="background:#3b82f6" onclick="setColor('#3b82f6')"></div>
+        <div class="color-dot" style="background:#22c55e" onclick="setColor('#22c55e')"></div>
+        <div class="color-dot" style="background:#f97316" onclick="setColor('#f97316')"></div>
+        <div class="color-dot" style="background:#a855f7" onclick="setColor('#a855f7')"></div>
+      </div>
+    </div>
+
+    <div class="form-body">
+      <div class="input-group">
+        <label>Customer Name</label>
+        <input type="text" id="custName" placeholder="Client Name">
+      </div>
+      <div class="input-group">
+        <label>Width (Feet)</label>
+        <input type="number" id="width" placeholder="4" step="0.1">
+      </div>
+      <div class="input-group">
+        <label>Length (Feet)</label>
+        <input type="number" id="length" placeholder="5" step="0.1">
+      </div>
+      <div class="input-group">
+        <label>Quantity</label>
+        <input type="number" id="qty" placeholder="1" value="1">
+      </div>
+      <div class="input-group">
+        <label>Rate Per Sq.Ft (₹)</label>
+        <input type="number" id="rate" placeholder="16" step="0.1">
+      </div>
+      <div class="input-group">
+        <label>Design/Service Charge (₹)</label>
+        <input type="number" id="service" placeholder="0" value="0">
+      </div>
+
+      <div class="toggle-row">
+        <span>Apply GST 18%</span>
+        <div class="toggle" id="gstToggle" onclick="toggleGST()">
+          <div class="toggle-dot"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-reset" onclick="resetForm()">Reset</button>
+        <button class="btn btn-calc" onclick="calculate()">Calculate</button>
+      </div>
+
+      <div class="result-box" id="result">
+        <div class="result-row">
+          <span>Base Sq.Ft</span>
+          <span id="sqft">0</span>
+        </div>
+        <div class="result-row">
+          <span>+ 10% Wastage</span>
+          <span id="wastage">0</span>
+        </div>
+        <div class="result-row">
+          <span>Printing Cost</span>
+          <span>₹<span id="cost">0</span></span>
+        </div>
+        <div class="result-row">
+          <span>Service Charge</span>
+          <span>₹<span id="serviceOut">0</span></span>
+        </div>
+        <div class="result-row" id="gstRow" style="display:none">
+          <span>GST 18%</span>
+          <span>₹<span id="gst">0</span></span>
+        </div>
+        <div class="result-row grand-total">
+          <span>Grand Total</span>
+          <span>₹<span id="total">0</span></span>
+        </div>
+        <button class="btn btn-pdf" onclick="downloadPDF()">📄 Download Professional Bill</button>
+      </div>
+
+      <div class="history" id="history" style="display:none">
+        <h4>Recent Quotes</h4>
+        <div id="historyList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let gstEnabled = false;
+    let currentQuote = {};
+    let history = JSON.parse(localStorage.getItem('iFaHistory') || '[]');
+    let logoData = localStorage.getItem('iFaLogo') || '';
+
+    function toggleTheme() {
+      const body = document.body;
+      body.dataset.theme = body.dataset.theme === 'dark'? 'light' : 'dark';
+    }
+
+    function setColor(color) {
+      document.documentElement.style.setProperty('--primary', color);
+    }
+
+    function loadLogo(e) {
+      const file = e.target.files[0];
+      if(file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          logoData = ev.target.result;
+          document.getElementById('logoPreview').src = logoData;
+          document.getElementById('logoPreview').style.display = 'block';
+          localStorage.setItem('iFaLogo', logoData);
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function toggleGST() {
+      gstEnabled =!gstEnabled;
+      document.getElementById('gstToggle').classList.toggle('active');
+      if(document.getElementById('result').style.display === 'block') calculate();
+    }
+
+    function calculate() {
+      const custName = document.getElementById('custName').value || 'Customer';
+      const w = parseFloat(document.getElementById('width').value) || 0;
+      const l = parseFloat(document.getElementById('length').value) || 0;
+      const q = parseFloat(document.getElementById('qty').value) || 1;
+      const r = parseFloat(document.getElementById('rate').value) || 0;
+      const s = parseFloat(document.getElementById('service').value) || 0;
+
+      if(w === 0 || l === 0) return alert('Enter Width & Length');
+
+      const baseSqft = w * l * q;
+      const wastageSqft = baseSqft * 1.1;
+      const printCost = wastageSqft * r;
+      const subtotal = printCost + s;
+      const gstAmt = gstEnabled? subtotal * 0.18 : 0;
+      const grandTotal = subtotal + gstAmt;
+
+      currentQuote = {custName, w, l, q, r, s, baseSqft, wastageSqft, printCost, gstAmt, grandTotal};
+
+      document.getElementById('sqft').innerText = baseSqft.toFixed(2) + ' Sq Ft';
+      document.getElementById('wastage').innerText = wastageSqft.toFixed(2) + ' Sq Ft';
+      document.getElementById('cost').innerText = printCost.toFixed(2);
+      document.getElementById('serviceOut').innerText = s.toFixed(2);
+      document.getElementById('gst').innerText = gstAmt.toFixed(2);
+      document.getElementById('total').innerText = grandTotal.toFixed(2);
+      document.getElementById('gstRow').style.display = gstEnabled? 'flex' : 'none';
+      document.getElementById('result').style.display = 'block';
+
+      saveHistory();
+    }
+
+    function saveHistory() {
+      history.unshift({
+        date: new Date().toLocaleDateString(),
+        name: currentQuote.custName,
+        size: `${currentQuote.w}×${currentQuote.l}×${currentQuote.q}`,
+        total: currentQuote.grandTotal.toFixed(2)
+      });
+      history = history.slice(0, 5);
+      localStorage.setItem('iFaHistory', JSON.stringify(history));
+      showHistory();
+    }
+
+    function showHistory() {
+      if(history.length === 0) return;
+      document.getElementById('history').style.display = 'block';
+      document.getElementById('historyList').innerHTML = history.map(h =>
+        `<div class="history-item"><b>${h.name}</b> | ${h.date}<br>${h.size} = ₹${h.total}</div>`
+      ).join('');
+    }
+
+    function resetForm() {
+      document.getElementById('custName').value = '';
+      document.querySelectorAll('input[type=number]').forEach(i => i.value = i.id === 'qty'? '1' : i.id === 'service'? '0' : '');
+      document.getElementById('result').style.display = 'none';
+    }
+
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const pageW = doc.internal.pageSize.getWidth();
+
+      if(logoData) {
+        doc.addImage(logoData, 'PNG', 15, 12, 25, 25);
+      }
+      doc.setFontSize(22);
+      doc.setFont('helvetica', 'bold');
+      doc.text('i-Fa Design', logoData? 45 : 15, 22);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Professional Printing Solutions', logoData? 45 : 15, 29);
+      doc.text('Phone: +91 98765 43210 | Email: ifa@design.com', logoData? 45 : 15, 35);
+
+      doc.setFillColor(59, 130, 246);
+      doc.rect(0, 42, pageW, 10, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(14);
+      doc.text('TAX INVOICE', pageW/2, 49, { align: 'center' });
+
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(10);
+      const invNum = 'INV-' + Date.now().toString().slice(-6);
+      doc.text(`Invoice No: ${invNum}`, 15, 62);
+      doc.text(`Date: ${new Date().toLocaleDateString('en-IN')}`, pageW-15, 62, { align: 'right' });
+      doc.text(`Bill To: ${currentQuote.custName}`, 15, 69);
+
+      doc.setFillColor(241, 245, 249);
+      doc.rect(15, 78, pageW-30, 8, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.text('Description', 17, 83);
+      doc.text('Qty', 110, 83);
+      doc.text('Rate', 135, 83);
+      doc.text('Amount', pageW-17, 83, { align: 'right' });
+
+      doc.setFont('helvetica', 'normal');
+      let y = 92;
+      doc.text(`Flex Printing ${currentQuote.w}ft × ${currentQuote.l}ft`, 17, y);
+      doc.text(`${currentQuote.q}`, 110, y);
+      doc.text(`₹${currentQuote.r}`, 135, y);
+      doc.text(`₹${currentQuote.printCost.toFixed(2)}`, pageW-17, y, { align: 'right' });
+      y += 7;
+      doc.text('Wastage 10% Included', 17, y);
+      y += 7;
+      if(currentQuote.s > 0) {
+        doc.text('Design/Service Charge', 17, y);
+        doc.text(`₹${currentQuote.s.toFixed(2)}`, pageW-17, y, { align: 'right' });
+        y += 7;
+      }
+
+      doc.line(15, y+2, pageW-15, y+2);
+      y += 9;
+      const subtotal = currentQuote.printCost + currentQuote.s;
+      doc.text('Sub Total:', 135, y);
+      doc.text(`₹${subtotal.toFixed(2)}`, pageW-17, y, { align: 'right' });
+      y += 7;
+      if(gstEnabled) {
+        doc.text('GST 18%:', 135, y);
+        doc.text(`₹${currentQuote.gstAmt.toFixed(2)}`, pageW-17, y, { align: 'right' });
+        y += 7;
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text('Grand Total:', 135, y);
+      doc.text(`₹${currentQuote.grandTotal.toFixed(2)}`, pageW-17, y, { align: 'right' });
+
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Thank you for your business!', 15, 270);
+      doc.text('Terms: Payment due within 7 days', 15, 276);
+      doc.text('i-Fa Design | Authorized Signatory', pageW-15, 276, { align: 'right' });
+
+      doc.save(`iFa-Bill-${invNum}.pdf`);
+    }
+
+    window.onload = () => {
+      if(logoData) {
+        document.getElementById('logoPreview').src = logoData;
+        document.getElementById('logoPreview').style.display = 'block';
+      }
+      showHistory();
+    }
+  </script>
+</body>
+</html>
